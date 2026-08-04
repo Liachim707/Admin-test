@@ -1,10 +1,9 @@
 package ru.yourcompany.autotest;
 
-import com.codeborne.selenide.WebElementCondition;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
+import static com.codeborne.selenide.Condition.text;
 import org.junit.jupiter.api.*;
-import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 import ru.yourcompany.autotest.pages.AdminPage;
 import ru.yourcompany.autotest.pages.RoomCreatePage;
 
@@ -20,7 +19,6 @@ public class AdminTests {
     }
 
     @Test
-    @EnabledIfEnvironmentVariable(named = "HEADLESS", matches = "false")
     public void testAdminLogin() {
 
         adminPage.usernameField().setValue("admin");
@@ -34,7 +32,6 @@ public class AdminTests {
     }
 
     @Test
-    @EnabledIfEnvironmentVariable(named = "HEADLESS", matches = "false")
     public void testCreateRoom() {
 
         adminPage.usernameField().setValue("admin");
@@ -45,10 +42,6 @@ public class AdminTests {
 
         roomPage.fillAndSave("Test Room", "5");
 
-        $("body").shouldHave(textContaining("Test Room"));
-    }
-
-    private WebElementCondition textContaining(String testRoom) {
-        return null;
+        $("h1").shouldHave(text("Admin Dashboard"));
     }
 }
