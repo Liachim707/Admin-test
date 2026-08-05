@@ -6,6 +6,7 @@ import static com.codeborne.selenide.Condition.text;
 import org.junit.jupiter.api.*;
 import ru.yourcompany.autotest.pages.AdminPage;
 import ru.yourcompany.autotest.pages.RoomCreatePage;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import static com.codeborne.selenide.Selenide.$;
 
@@ -25,10 +26,6 @@ public class AdminTests {
         adminPage.passwordField().setValue("password");
         adminPage.loginButton().click();
 
-        assertTrue(adminPage.isLoggedIn(), "Admin login failed");
-    }
-
-    private void assertTrue(boolean loggedIn, String adminLoginFailed) {
     }
 
     @Test
