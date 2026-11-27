@@ -1,44 +1,39 @@
 package ru.yourcompany.autotest;
 
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
-import static com.codeborne.selenide.Condition.text;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.Test;
 import ru.yourcompany.autotest.pages.AdminPage;
 import ru.yourcompany.autotest.pages.RoomCreatePage;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import static com.codeborne.selenide.Selenide.$;
+import java.util.UUID;
 
-public class AdminTests {
+class AdminTests {
 
     private AdminPage adminPage;
 
     @BeforeEach
     void setUp() {
-        adminPage = new AdminPage();
+        adminPage = new AdminPage().openPage();
+    }
+
+    private void loginAsAdmin() {
+        adminPage.login("admin", "password").shouldBeLoggedIn();
     }
 
     @Test
-    public void testAdminLogin() {
-
-        adminPage.usernameField().setValue("admin");
-        adminPage.passwordField().setValue("password");
-        adminPage.loginButton().click();
-
+    void adminCanLogIn() {
+        loginAsAdmin();
     }
 
     @Test
-    public void testCreateRoom() {
+    void adminCanCreateRoom() {
+        loginAsAdmin();
 
-        adminPage.usernameField().setValue("admin");
-        adminPage.passwordField().setValue("password");
-        adminPage.loginButton().click();
+        String roomName = "Test Room " + UUID.randomUUID().toString().substring(0, 8);
+        RoomCreatePage roomPage = adminPage.roomForm();
 
-        RoomCreatePage roomPage = adminPage.goToCreateRoom();
-
-        roomPage.fillAndSave("Test Room", "5");
-
-        $("h1").shouldHave(text("Admin Dashboard"));
+        roomPage.createRoom(roomName, "Single", true, "120",
+                "Room created by automated UI test");
+        roomPage.shouldContainRoom(roomName);
     }
 }
