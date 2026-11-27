@@ -29,7 +29,7 @@ class AdminTests {
     void adminCanCreateRoom() {
         loginAsAdmin();
 
-        String roomName = "Test Room " + UUID.randomUUID().toString().substring(0, 8);
+        String roomName = "Test-Room-" + UUID.randomUUID().toString().substring(0, 8);
         RoomCreatePage roomPage = adminPage.roomForm();
 
         roomPage.createRoom(roomName, "Single", true, "120",
