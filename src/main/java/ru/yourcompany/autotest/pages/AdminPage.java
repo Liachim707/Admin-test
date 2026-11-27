@@ -1,46 +1,35 @@
 package ru.yourcompany.autotest.pages;
 
-import com.codeborne.selenide.SelenideElement;
-import com.codeborne.selenide.WebElementCondition;
-
+import static com.codeborne.selenide.Condition.text;
+import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
 
 public class AdminPage {
 
-    public static final String BASE_URL = "https://automationintesting.online/#/admin";
+    public static final String ADMIN_URL = "https://automationintesting.online/#/admin";
 
-    public AdminPage() {
-        open(BASE_URL);
-        waitForAdminPage();
+    public AdminPage openPage() {
+        open(ADMIN_URL);
+        $("#username").shouldBe(visible);
+        $("#password").shouldBe(visible);
+        $("#doLogin").shouldBe(visible);
+        return this;
     }
 
-    private void waitForAdminPage() {
-        $("h1").shouldHave(textContaining("Admin Dashboard"));
+    public AdminPage login(String username, String password) {
+        $("#username").setValue(username);
+        $("#password").setValue(password);
+        $("#doLogin").click();
+        return this;
     }
 
-    private WebElementCondition textContaining(String adminDashboard) {
-        return null;
+    public AdminPage shouldBeLoggedIn() {
+        $("h2").shouldHave(text("Rooms"));
+        return this;
     }
 
-    public SelenideElement usernameField() {
-        return $("#username");
-    }
-
-    public SelenideElement passwordField() {
-        return $("#password");
-    }
-
-    public SelenideElement loginButton() {
-        return $("#loginBtn");
-    }
-
-    public boolean isLoggedIn() {
-        return $("h1").text().contains("Admin Dashboard");
-    }
-
-    public RoomCreatePage goToCreateRoom() {
-        $("#room-create-link").click();
+    public RoomCreatePage roomForm() {
         return new RoomCreatePage();
     }
 }
